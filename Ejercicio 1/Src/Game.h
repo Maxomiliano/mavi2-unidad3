@@ -24,9 +24,9 @@ private:
 
 	Vector2f ballPosition;
 	Vector2f ballVelocity;
-	float ballRadius = 10.0f;
+	float ballRadius = 5.0f;
 	float ballMass = 1.0f;
-	float ballElascicityConstant = 1000.0f;
+	float K = 1000.0f;
 
 public:
 	//Constructores, destructores e inicializadores

@@ -2,7 +2,7 @@
 #include "Box2DHelper.h"
 
 // Constructor de la clase Game
-Game::Game(int ancho, int alto, std::string titulo)
+Game::Game(int ancho, int alto, std::string titulo) : ballPosition(50, 50), ballVelocity(1, 0.5f) // Inicializa la posición y velocidad de la bola
 {
 	wnd = new RenderWindow(VideoMode(ancho, alto), titulo); // Crea una ventana con las dimensiones y título especificados
 	wnd->setVisible(true); // Hace visible la ventana
@@ -31,6 +31,38 @@ void Game::UpdatePhysics()
 	//phyWorld->Step(frameTime, 8, 8); // Avanza la simulación de física un paso
 	//phyWorld->ClearForces(); // Limpia las fuerzas acumuladas
 	//phyWorld->DebugDraw(); // Dibuja la representación de debug de la simulación
+	ballPosition += ballVelocity * frameTime;
+	if (ballPosition.x - ballRadius < 0.0f)
+	{
+		float x = ballRadius - ballPosition.x;
+		float force = -K * x;
+		float acceleration = force / ballMass;
+		ballVelocity.x += acceleration * frameTime;
+	}
+
+	if(ballPosition.x + ballRadius > 800)
+	{
+		float x = ballPosition.x + ballRadius - 800;
+		float force = -K * x;
+		float acceleration = force / ballMass;
+		ballVelocity.x += acceleration * frameTime;
+	}
+
+	if (ballPosition.y + ballRadius < 0)
+	{
+		float x = ballRadius - ballPosition.y;
+		float force = -K * x;
+		float acceleration = force / ballMass;
+		ballVelocity.y += acceleration * frameTime;
+	}
+
+	if (ballPosition.y + ballRadius > 600)
+	{
+		float x = ballPosition.y + ballRadius - 600;
+		float force = -K * x;
+		float acceleration = force / ballMass;
+		ballVelocity.y += acceleration * frameTime;
+	}
 }
 
 
