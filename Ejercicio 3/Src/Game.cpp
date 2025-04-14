@@ -74,47 +74,6 @@ void Game::DoEvents()
 			break;
 		}
 	}
-	if (mouse->isButtonPressed(mouse->Left))
-	{
-		// Convertí la posición del mouse a coordenadas del mundo
-		Vector2i pixelPos = mouse->getPosition(*wnd);
-		Vector2f worldPos = wnd->mapPixelToCoords(pixelPos);
-		b2Vec2 b2MousePos(worldPos.x, worldPos.y);
-		if (!wasMousePressed)
-		{
-			wasMousePressed = true;
-			if (controlBody->GetFixtureList()->TestPoint(b2MousePos))
-			{
-				draggedBody = controlBody;
-			}
-			else if (controlBody->GetFixtureList()->TestPoint(b2MousePos))
-			{
-				draggedBody = controlBody;
-			}
-		}
-		else if (draggedBody != nullptr)
-		{
-			draggedBody->SetAwake(true);
-			draggedBody->SetTransform(b2MousePos, draggedBody->GetAngle());
-		}
-	}
-	else
-	{
-		wasMousePressed = false;
-		draggedBody = nullptr;
-	}
-
-
-	// Mueve el cuerpo controlado por el teclado
-	controlBody->SetAwake(true); // Activa el cuerpo para que responda a fuerzas y colisiones
-	if (Keyboard::isKeyPressed(Keyboard::Left))
-		controlBody->SetLinearVelocity(b2Vec2(-50.0f, 0.0f));
-	if (Keyboard::isKeyPressed(Keyboard::Right))
-		controlBody->SetLinearVelocity(b2Vec2(50.0f, 0.0f));
-	if (Keyboard::isKeyPressed(Keyboard::Down))
-		controlBody->SetLinearVelocity(b2Vec2(0.0f, 50.0f));
-	if (Keyboard::isKeyPressed(Keyboard::Up))
-		controlBody->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
 }
 
 // Configura el área visible en la ventana de renderizado
@@ -152,12 +111,12 @@ void Game::InitPhysics()
 
 	// Crea un cuerpo de círculo controlado por el teclado
 	controlBody = Box2DHelper::CreateCircularDynamicBody(phyWorld, 5, 1.0f, 0.5, 0.1f);
-	controlBody->SetTransform(b2Vec2(50.0f, 50.0f), 0.0f);
+	controlBody->SetTransform(b2Vec2(10.0f, 50.0f), 0.0f);
 
-	b2Body* circuloIzq = Box2DHelper::CreateCircularDynamicBody(phyWorld, 5, 1.0f, 0.5, 0.1f);
-	circuloIzq->SetTransform(b2Vec2(80.0f, 10.0f), 0.0f);
+	b2Body* staticSquareBody = Box2DHelper::CreateRectangularStaticBody(phyWorld,5,5);
+	staticSquareBody->SetTransform(b2Vec2(50.0f, 20.0f), 0.0f);
 
-	Box2DHelper::CreateDistanceJoint(phyWorld, circuloIzq, circuloIzq->GetWorldCenter(),
+	Box2DHelper::CreateDistanceJoint(phyWorld, staticSquareBody, staticSquareBody->GetWorldCenter(),
 		controlBody, controlBody->GetWorldCenter() , 10.0f, 0.5f, 0.5f);
 }
 
