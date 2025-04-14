@@ -100,8 +100,5 @@ void Game::InitPhysics()
 	// Crea un cuerpo de círculo controlado por el teclado
 	controlBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 5, 5, 0.8f, 0.5f, 0.1f);
 	controlBody->SetTransform(b2Vec2(50.0f, 50.0f), 0.0f);
-
-	previousPosition = controlBody->GetPosition();
-	totalWork = 0.0f;
 }
 
