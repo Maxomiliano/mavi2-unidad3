@@ -28,15 +28,43 @@ void Game::Loop()
 
 void Game::UpdatePhysics()
 {
-	phyWorld->Step(frameTime, 8, 8); // Avanza la simulación de física un paso
-	phyWorld->ClearForces(); // Limpia las fuerzas acumuladas
-	phyWorld->DebugDraw(); // Dibuja la representación de debug de la simulación
+	//phyWorld->Step(frameTime, 8, 8); // Avanza la simulación de física un paso
+	//phyWorld->ClearForces(); // Limpia las fuerzas acumuladas
+	//phyWorld->DebugDraw(); // Dibuja la representación de debug de la simulación
 }
 
 
 void Game::DrawGame()
 {
 	// Función para dibujar los elementos del juego (a implementar)
+	// Dibujar el cuerpo de control (círculo)
+	sf::CircleShape controlShape(ballRadius);
+	controlShape.setFillColor(sf::Color::Magenta);
+	controlShape.setPosition(ballPosition);
+	wnd->draw(controlShape);
+
+	// Dibujar el suelo
+	sf::RectangleShape groundShape(sf::Vector2f(100, 5));
+	groundShape.setFillColor(sf::Color::Red);
+	groundShape.setPosition(0, 95);
+	wnd->draw(groundShape);
+
+	// Dibujar el techo
+	sf::RectangleShape ceilShape(sf::Vector2f(100, 5));
+	ceilShape.setFillColor(sf::Color::Red);
+	ceilShape.setPosition(0, 0);
+	wnd->draw(ceilShape);
+
+	// Dibujamos las paredes
+	sf::RectangleShape leftWallShape(sf::Vector2f(5, 100)); // Alto de la ventana
+	leftWallShape.setFillColor(sf::Color::Red);
+	leftWallShape.setPosition(0, 0); // X = 100 para que comience donde termina el suelo
+	wnd->draw(leftWallShape);
+
+	sf::RectangleShape rightWallShape(sf::Vector2f(5, 100)); // Alto de la ventana
+	rightWallShape.setFillColor(sf::Color::Red);
+	rightWallShape.setPosition(95, 0); // X = 90 para que comience donde termina el suelo
+	wnd->draw(rightWallShape);;
 }
 
 void Game::DoEvents()
@@ -48,12 +76,6 @@ void Game::DoEvents()
 		{
 		case Event::Closed: // Si se solicita cerrar la ventana
 			wnd->close(); // Cierra la ventana
-			break;
-		case Event::MouseButtonPressed: // Si se presiona un botón del ratón
-			// Crea un cuerpo dinámico con forma triangular en la posición del clic
-			b2Body* body = Box2DHelper::CreateTriangularDynamicBody(phyWorld, b2Vec2(0.0f, 0.0f), 10.0f, 1.0f, 4.0f, 0.1f);
-			Vector2f pos = wnd->mapPixelToCoords(Vector2i(evt.mouseButton.x, evt.mouseButton.y)); // Transforma la posición del clic a coordenadas del mundo
-			body->SetTransform(b2Vec2(pos.x, pos.y), 0.0f); // Mueve el cuerpo a la posición del clic
 			break;
 		}
 	}
@@ -74,6 +96,8 @@ void Game::SetZoom()
 
 void Game::InitPhysics()
 {
+	/*
+	
 	// Inicializa el mundo de Box2D con una gravedad hacia abajo
 	phyWorld = new b2World(b2Vec2(0.0f, 9.8f));
 
@@ -119,6 +143,7 @@ void Game::InitPhysics()
 	// Atamos la esfera mediante un resorte al techo
 	Box2DHelper::CreateDistanceJoint(phyWorld, circuloDer, circuloDer->GetWorldCenter(),
 		topWallBody, topWallBody->GetWorldCenter() + b2Vec2(-35.0f, 0.0f), 20.0f, 0.1f, 1.0f);
+		*/
 }
 
 Game::~Game(void)

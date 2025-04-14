@@ -22,6 +22,12 @@ private:
 	float frameTime;
 	int fps;
 
+	Vector2f ballPosition;
+	Vector2f ballVelocity;
+	float ballRadius = 10.0f;
+	float ballMass = 1.0f;
+	float ballElascicityConstant = 1000.0f;
+
 public:
 	//Constructores, destructores e inicializadores
 	Game(int ancho, int alto, std::string titulo);
