@@ -25,10 +25,12 @@ private:
 
 	//cuerpo de box2d 
 	b2Body* controlBody;
+	b2Body* draggedBody;
 	Avatar* controlBodyAvatar;
+	Mouse* mouse;
 	
 	sf::Texture texturaPelota;
-		
+	bool wasMousePressed = false;
 
 public:
 
@@ -42,9 +44,6 @@ public:
 	void DrawGame();
 	void UpdatePhysics();
 	void DoEvents();
-	void SetZoom();
-	
-
-	
+	void SetZoom();	
 };
 

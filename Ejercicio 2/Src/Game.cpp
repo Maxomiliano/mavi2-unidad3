@@ -72,15 +72,38 @@ void Game::DoEvents()
 		case Event::Closed:
 			wnd->close(); // Cierra la ventana
 			break;
-
-		case Event::MouseButtonPressed:
-		{
-
-		}
-		break;
-
 		}
 	}
+	if (mouse->isButtonPressed(mouse->Left))
+	{
+		// Convertí la posición del mouse a coordenadas del mundo
+		Vector2i pixelPos = mouse->getPosition(*wnd);
+		Vector2f worldPos = wnd->mapPixelToCoords(pixelPos);
+		b2Vec2 b2MousePos(worldPos.x, worldPos.y);
+		if (!wasMousePressed)
+		{
+			wasMousePressed = true;
+			if (controlBody->GetFixtureList()->TestPoint(b2MousePos))
+			{
+				draggedBody = controlBody;
+			}
+			else if (controlBody->GetFixtureList()->TestPoint(b2MousePos))
+			{
+				draggedBody = controlBody;
+			}
+		}
+		else if (draggedBody != nullptr)
+		{
+			draggedBody->SetAwake(true);
+			draggedBody->SetTransform(b2MousePos, draggedBody->GetAngle());
+		}
+	}
+	else
+	{
+		wasMousePressed = false;
+		draggedBody = nullptr;
+	}
+
 
 	// Mueve el cuerpo controlado por el teclado
 	controlBody->SetAwake(true); // Activa el cuerpo para que responda a fuerzas y colisiones
@@ -135,6 +158,6 @@ void Game::InitPhysics()
 	circuloIzq->SetTransform(b2Vec2(80.0f, 10.0f), 0.0f);
 
 	Box2DHelper::CreateDistanceJoint(phyWorld, circuloIzq, circuloIzq->GetWorldCenter(),
-		controlBody, controlBody->GetWorldCenter() + b2Vec2(35.0f, 0.0f), 20.0f, 0.1f, 1.0f);
+		controlBody, controlBody->GetWorldCenter() + b2Vec2(35.0f, 0.0f), 10.0f, 0.1f, 1.0f);
 }
 
