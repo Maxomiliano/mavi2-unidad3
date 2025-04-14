@@ -36,30 +36,7 @@ void Game::UpdatePhysics()
 }
 
 // Dibuja los elementos del juego en la ventana
-void Game::DrawGame()
-{
-	/*
-	// Dibujamos el suelo
-	sf::RectangleShape groundShape(sf::Vector2f(500, 5));
-	groundShape.setFillColor(sf::Color::Red);
-	groundShape.setPosition(0, 95);
-	wnd->draw(groundShape);
-
-	// Dibujamos las paredes
-	sf::RectangleShape leftWallShape(sf::Vector2f(10, alto)); // Alto de la ventana
-	leftWallShape.setFillColor(sf::Color::Red);
-	leftWallShape.setPosition(100, 0); // X = 100 para que comience donde termina el suelo
-	wnd->draw(leftWallShape);
-
-	sf::RectangleShape rightWallShape(sf::Vector2f(10, alto)); // Alto de la ventana
-	rightWallShape.setFillColor(sf::Color::Cyan);
-	rightWallShape.setPosition(90, 0); // X = 90 para que comience donde termina el suelo
-	wnd->draw(rightWallShape);
-
-	controlBodyAvatar->Actualizar(); // Actualiza la posición del avatar
-	controlBodyAvatar->Dibujar(*wnd); // Dibuja el avatar en la ventana
-	*/
-}
+void Game::DrawGame(){}
 
 // Procesa los eventos del sistema
 void Game::DoEvents()
@@ -74,47 +51,17 @@ void Game::DoEvents()
 			break;
 		}
 	}
-	if (mouse->isButtonPressed(mouse->Left))
-	{
-		// Convertí la posición del mouse a coordenadas del mundo
-		Vector2i pixelPos = mouse->getPosition(*wnd);
-		Vector2f worldPos = wnd->mapPixelToCoords(pixelPos);
-		b2Vec2 b2MousePos(worldPos.x, worldPos.y);
-		if (!wasMousePressed)
-		{
-			wasMousePressed = true;
-			if (controlBody->GetFixtureList()->TestPoint(b2MousePos))
-			{
-				draggedBody = controlBody;
-			}
-			else if (controlBody->GetFixtureList()->TestPoint(b2MousePos))
-			{
-				draggedBody = controlBody;
-			}
-		}
-		else if (draggedBody != nullptr)
-		{
-			draggedBody->SetAwake(true);
-			draggedBody->SetTransform(b2MousePos, draggedBody->GetAngle());
-		}
-	}
-	else
-	{
-		wasMousePressed = false;
-		draggedBody = nullptr;
-	}
-
 
 	// Mueve el cuerpo controlado por el teclado
 	controlBody->SetAwake(true); // Activa el cuerpo para que responda a fuerzas y colisiones
 	if (Keyboard::isKeyPressed(Keyboard::Left))
-		controlBody->SetLinearVelocity(b2Vec2(-50.0f, 0.0f));
+		controlBody->ApplyForce(b2Vec2(-150.0f, 0.0f), controlBody->GetWorldCenter(), true);
 	if (Keyboard::isKeyPressed(Keyboard::Right))
-		controlBody->SetLinearVelocity(b2Vec2(50.0f, 0.0f));
+		controlBody->ApplyForce(b2Vec2(150.0f, 0.0f), controlBody->GetWorldCenter(), true);
 	if (Keyboard::isKeyPressed(Keyboard::Down))
-		controlBody->SetLinearVelocity(b2Vec2(0.0f, 50.0f));
+		controlBody->ApplyForce(b2Vec2(0, 50.0f), controlBody->GetWorldCenter(), true);
 	if (Keyboard::isKeyPressed(Keyboard::Up))
-		controlBody->SetLinearVelocity(b2Vec2(0.0f, -50.0f));
+		controlBody->ApplyForce(b2Vec2(0, -300.0f), controlBody->GetWorldCenter(), true);
 }
 
 // Configura el área visible en la ventana de renderizado
@@ -151,13 +98,10 @@ void Game::InitPhysics()
 	topWallBody->SetTransform(b2Vec2(50.0f, 0.0f), 0.0f);
 
 	// Crea un cuerpo de círculo controlado por el teclado
-	controlBody = Box2DHelper::CreateCircularDynamicBody(phyWorld, 5, 1.0f, 0.5, 0.1f);
+	controlBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 5, 5, 0.8f, 0.5f, 0.1f);
 	controlBody->SetTransform(b2Vec2(50.0f, 50.0f), 0.0f);
 
-	b2Body* circuloIzq = Box2DHelper::CreateCircularDynamicBody(phyWorld, 5, 1.0f, 0.5, 0.1f);
-	circuloIzq->SetTransform(b2Vec2(80.0f, 10.0f), 0.0f);
-
-	Box2DHelper::CreateDistanceJoint(phyWorld, circuloIzq, circuloIzq->GetWorldCenter(),
-		controlBody, controlBody->GetWorldCenter() , 10.0f, 0.5f, 0.5f);
+	previousPosition = controlBody->GetPosition();
+	totalWork = 0.0f;
 }
 
