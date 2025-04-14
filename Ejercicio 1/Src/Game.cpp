@@ -2,7 +2,7 @@
 #include "Box2DHelper.h"
 
 // Constructor de la clase Game
-Game::Game(int ancho, int alto, std::string titulo) : ballPosition(50, 50), ballVelocity(1, 0.5f) // Inicializa la posición y velocidad de la bola
+Game::Game(int ancho, int alto, std::string titulo) : ballPosition(50, 50), ballVelocity(-10,20) // Inicializa la posición y velocidad de la bola
 {
 	wnd = new RenderWindow(VideoMode(ancho, alto), titulo); // Crea una ventana con las dimensiones y título especificados
 	wnd->setVisible(true); // Hace visible la ventana
@@ -32,36 +32,49 @@ void Game::UpdatePhysics()
 	//phyWorld->ClearForces(); // Limpia las fuerzas acumuladas
 	//phyWorld->DebugDraw(); // Dibuja la representación de debug de la simulación
 	ballPosition += ballVelocity * frameTime;
+
+	//Izquierdo
 	if (ballPosition.x - ballRadius < 0.0f)
 	{
-		float x = ballRadius - ballPosition.x;
+		float x = ballPosition.x -ballRadius;
 		float force = -K * x;
 		float acceleration = force / ballMass;
 		ballVelocity.x += acceleration * frameTime;
+
+		//ballPosition.x = ballRadius;
 	}
 
-	if(ballPosition.x + ballRadius > 800)
+	//Derecho
+	if(ballPosition.x + ballRadius > 100)
 	{
-		float x = ballPosition.x + ballRadius - 800;
+		float x = ballPosition.x + ballRadius - 100;
 		float force = -K * x;
 		float acceleration = force / ballMass;
 		ballVelocity.x += acceleration * frameTime;
+
+		//ballPosition.x = 100.0f - ballRadius;
 	}
 
+	//Superior
 	if (ballPosition.y + ballRadius < 0)
 	{
-		float x = ballRadius - ballPosition.y;
+		float x = ballPosition.y + ballRadius;
 		float force = -K * x;
 		float acceleration = force / ballMass;
 		ballVelocity.y += acceleration * frameTime;
+
+		//ballPosition.y = ballRadius;
 	}
 
-	if (ballPosition.y + ballRadius > 600)
+	//Inferior
+	if (ballPosition.y + ballRadius > 100)
 	{
-		float x = ballPosition.y + ballRadius - 600;
+		float x = ballPosition.y + ballRadius - 100;
 		float force = -K * x;
 		float acceleration = force / ballMass;
 		ballVelocity.y += acceleration * frameTime;
+
+		//ballPosition.y = 100.0f - ballRadius;
 	}
 }
 
@@ -76,26 +89,26 @@ void Game::DrawGame()
 	wnd->draw(controlShape);
 
 	// Dibujar el suelo
-	sf::RectangleShape groundShape(sf::Vector2f(100, 5));
+	sf::RectangleShape groundShape(sf::Vector2f(100, 2));
 	groundShape.setFillColor(sf::Color::Red);
-	groundShape.setPosition(0, 95);
+	groundShape.setPosition(0, 98);
 	wnd->draw(groundShape);
 
 	// Dibujar el techo
-	sf::RectangleShape ceilShape(sf::Vector2f(100, 5));
+	sf::RectangleShape ceilShape(sf::Vector2f(100, 2));
 	ceilShape.setFillColor(sf::Color::Red);
 	ceilShape.setPosition(0, 0);
 	wnd->draw(ceilShape);
 
 	// Dibujamos las paredes
-	sf::RectangleShape leftWallShape(sf::Vector2f(5, 100)); // Alto de la ventana
+	sf::RectangleShape leftWallShape(sf::Vector2f(2, 100)); // Alto de la ventana
 	leftWallShape.setFillColor(sf::Color::Red);
 	leftWallShape.setPosition(0, 0); // X = 100 para que comience donde termina el suelo
 	wnd->draw(leftWallShape);
 
-	sf::RectangleShape rightWallShape(sf::Vector2f(5, 100)); // Alto de la ventana
+	sf::RectangleShape rightWallShape(sf::Vector2f(2, 100)); // Alto de la ventana
 	rightWallShape.setFillColor(sf::Color::Red);
-	rightWallShape.setPosition(95, 0); // X = 90 para que comience donde termina el suelo
+	rightWallShape.setPosition(98, 0); // X = 90 para que comience donde termina el suelo
 	wnd->draw(rightWallShape);;
 }
 
