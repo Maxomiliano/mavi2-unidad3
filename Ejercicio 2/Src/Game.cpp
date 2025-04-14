@@ -158,6 +158,6 @@ void Game::InitPhysics()
 	circuloIzq->SetTransform(b2Vec2(80.0f, 10.0f), 0.0f);
 
 	Box2DHelper::CreateDistanceJoint(phyWorld, circuloIzq, circuloIzq->GetWorldCenter(),
-		controlBody, controlBody->GetWorldCenter() + b2Vec2(35.0f, 0.0f), 10.0f, 0.1f, 1.0f);
+		controlBody, controlBody->GetWorldCenter() , 10.0f, 0.5f, 0.5f);
 }
 
