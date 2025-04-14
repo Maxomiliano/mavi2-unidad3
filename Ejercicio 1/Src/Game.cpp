@@ -31,8 +31,8 @@ void Game::UpdatePhysics()
 	//phyWorld->Step(frameTime, 8, 8); // Avanza la simulación de física un paso
 	//phyWorld->ClearForces(); // Limpia las fuerzas acumuladas
 	//phyWorld->DebugDraw(); // Dibuja la representación de debug de la simulación
+	
 	ballPosition += ballVelocity * frameTime;
-
 	//Izquierdo
 	if (ballPosition.x - ballRadius < 0.0f)
 	{
@@ -40,8 +40,6 @@ void Game::UpdatePhysics()
 		float force = -K * x;
 		float acceleration = force / ballMass;
 		ballVelocity.x += acceleration * frameTime;
-
-		//ballPosition.x = ballRadius;
 	}
 
 	//Derecho
@@ -51,8 +49,6 @@ void Game::UpdatePhysics()
 		float force = -K * x;
 		float acceleration = force / ballMass;
 		ballVelocity.x += acceleration * frameTime;
-
-		//ballPosition.x = 100.0f - ballRadius;
 	}
 
 	//Superior
@@ -62,8 +58,6 @@ void Game::UpdatePhysics()
 		float force = -K * x;
 		float acceleration = force / ballMass;
 		ballVelocity.y += acceleration * frameTime;
-
-		//ballPosition.y = ballRadius;
 	}
 
 	//Inferior
@@ -73,9 +67,7 @@ void Game::UpdatePhysics()
 		float force = -K * x;
 		float acceleration = force / ballMass;
 		ballVelocity.y += acceleration * frameTime;
-
-		//ballPosition.y = 100.0f - ballRadius;
-	}
+	}	
 }
 
 
