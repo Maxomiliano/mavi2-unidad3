@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     // Creamos una instancia del juego
     Game* Juego;
     // Inicializamos el juego con una ventana de 800x600 píxeles con el título "Avatar"
-    Juego = new Game(800, 600, "Avatar - MAVII");
+    Juego = new Game(800, 600, "Ejercicio 2");
     // Iniciamos el bucle principal del juego
     Juego->Loop();
 
