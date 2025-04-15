@@ -92,49 +92,50 @@ void Game::InitPhysics()
 
 
 	b2Body* headBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 5, 5, density, friction, restitution);
-	headBody->SetTransform(b2Vec2(50.0f, 79.0f), 0.0f);
+	headBody->SetTransform(b2Vec2(50.0f, 60.0f), 0.0f);
 
 	b2Body* centerBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 10, 20, density, friction, restitution);
-	centerBody->SetTransform(b2Vec2(50.0f, 85.0f), 0.0f);
+	centerBody->SetTransform(b2Vec2(50.0f, 70.0f), 0.0f);
 
 	b2Body* leftArmBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 2, 15, density, friction, restitution);
-	leftArmBody->SetTransform(b2Vec2(45.0f, 85.0f), 0.0f);
+	leftArmBody->SetTransform(b2Vec2(45.0f, 70.0f), 0.0f);
 
 	b2Body* rightArmBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 2, 15, density, friction, restitution);
-	rightArmBody->SetTransform(b2Vec2(55.0f, 85.0f), 0.0f);
+	rightArmBody->SetTransform(b2Vec2(55.0f, 70.0f), 0.0f);
 
 	b2Body* leftLegBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 2, 15, density, friction, restitution);
-	leftLegBody->SetTransform(b2Vec2(48.0f, 100.0f), 0.0f);
+	leftLegBody->SetTransform(b2Vec2(48.0f, 92.5f), 0.0f);
 
 	b2Body* rightLegBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 2, 15, density, friction, restitution);
-	rightLegBody->SetTransform(b2Vec2(52.0f, 100.0f), 0.0f);
-
-	//Cabeza y torso
-	b2Vec2 headAnchor(50.0f, 81.5f);
-	b2Vec2 centerAnchor(50.0f, 79.0f);
-
-	b2Vec2 localAnchorHead = headBody->GetLocalPoint(headAnchor);
-	b2Vec2 localAnchorTorso = centerBody->GetLocalPoint(centerAnchor);
-
-	b2DistanceJoint* headJoint = Box2DHelper::CreateDistanceJoint(phyWorld, headBody, localAnchorHead, centerBody, localAnchorTorso, 0, 0.5f, 0.2f);
+	rightLegBody->SetTransform(b2Vec2(52.0f, 92.5f), 0.0f);
 
 	
+	
+	//Cabeza y torso
+	b2Vec2 headAnchor(50.0f, 62.0f);
+	b2Vec2 centerAnchor(50.0f, 60.0f);
+	b2DistanceJoint* headJoint = Box2DHelper::CreateDistanceJoint(phyWorld, headBody, headAnchor, centerBody, centerAnchor, 0, 0.5f, 0.2f);
+	
 	//Brazo izquierdo y torso
-	b2Vec2 centerAnchorLA(47.0f, 80.0f);
-	b2Vec2 leftArmAnchor(45.0f, 77.5f);
-
-	b2Vec2 localAnchorLeftArm = leftArmBody->GetLocalPoint(leftArmAnchor);
-	b2Vec2 localAnchorTorsoLeftArm = centerBody->GetLocalPoint(centerAnchorLA);
-
-	b2DistanceJoint* leftArmJoint = Box2DHelper::CreateDistanceJoint(phyWorld, leftArmBody, localAnchorLeftArm, centerBody, localAnchorTorsoLeftArm, 0, 0.5f, 0.2f);	
+	b2Vec2 centerAnchorLA(46.0f, 62.0f);
+	b2Vec2 leftArmAnchor(45.0f, 64.0f);
+	b2DistanceJoint* leftArmJoint = Box2DHelper::CreateDistanceJoint(phyWorld, leftArmBody, leftArmAnchor , centerBody, centerAnchorLA, 1, 0.5f, 0.2f);
 
 	//Brazo derecho y torso
-	b2Vec2 centerAnchorRA(53.0f, 80.0f);
-	b2Vec2 rightArmAnchor(55.0f, 77.5f);
+	b2Vec2 centerAnchorRA(53.0f, 62.0f);
+	b2Vec2 rightArmAnchor(55.0f, 64.0f);
+	b2DistanceJoint* rightArmJoint = Box2DHelper::CreateDistanceJoint(phyWorld, rightArmBody, rightArmAnchor, centerBody, centerAnchorRA, 1, 0.8f, 0.1f);
 
-	b2Vec2 localAnchorRightArm = rightArmBody->GetLocalPoint(rightArmAnchor);
-	b2Vec2 localAnchorTorsoRightArm = centerBody->GetLocalPoint(centerAnchorRA);
+	//Pierna izquierda y torso
+	b2Vec2 centerAnchorLL(48.0f, 78.0f);
+	b2Vec2 leftLegAnchor(48.0f, 85.0f);
+	b2DistanceJoint* leftLegJoint = Box2DHelper::CreateDistanceJoint(phyWorld, leftLegBody, leftLegAnchor, centerBody, centerAnchorLL, 0, 0.5f, 0.2f);
 
-	b2DistanceJoint* rightArmJoint = Box2DHelper::CreateDistanceJoint(phyWorld, rightArmBody, localAnchorRightArm, centerBody, localAnchorTorsoRightArm, 0, 0.8f, 0.1f);
+	//Pierna derecha y torso
+	b2Vec2 centerAnchorRL(52.0f, 78.0f);
+	b2Vec2 rightLegAnchor(52.0f, 85.5f);
+	b2DistanceJoint* rightLegJoint = Box2DHelper::CreateDistanceJoint(phyWorld, rightLegBody, rightLegAnchor, centerBody, centerAnchorRL, 0, 0.5f, 0.2f);
+	/*
+	*/
 }
 
