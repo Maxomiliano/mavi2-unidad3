@@ -51,6 +51,15 @@ void Game::DoEvents()
 			break;
 		}
 	}
+	centerBody->SetAwake(true); // Activa el cuerpo para que responda a fuerzas y colisiones
+	if (Keyboard::isKeyPressed(Keyboard::Left))
+		centerBody->ApplyForce(b2Vec2(-1500.0f, 0.0f), centerBody->GetWorldCenter(), true);
+	if (Keyboard::isKeyPressed(Keyboard::Right))
+		centerBody->ApplyForce(b2Vec2(1500.0f, 0.0f), centerBody->GetWorldCenter(), true);
+	if (Keyboard::isKeyPressed(Keyboard::Down))
+		centerBody->ApplyForce(b2Vec2(0, 500.0f), centerBody->GetWorldCenter(), true);
+	if (Keyboard::isKeyPressed(Keyboard::Up))
+		centerBody->ApplyForce(b2Vec2(0, -10500.0f), centerBody->GetWorldCenter(), true);
 }
 
 // Configura el área visible en la ventana de renderizado
@@ -94,7 +103,7 @@ void Game::InitPhysics()
 	b2Body* headBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 5, 5, density, friction, restitution);
 	headBody->SetTransform(b2Vec2(50.0f, 60.0f), 0.0f);
 
-	b2Body* centerBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 10, 20, density, friction, restitution);
+	centerBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 10, 20, density, friction, restitution);
 	centerBody->SetTransform(b2Vec2(50.0f, 70.0f), 0.0f);
 
 	b2Body* leftArmBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 2, 15, density, friction, restitution);
@@ -104,10 +113,10 @@ void Game::InitPhysics()
 	rightArmBody->SetTransform(b2Vec2(55.0f, 70.0f), 0.0f);
 
 	b2Body* leftLegBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 2, 15, density, friction, restitution);
-	leftLegBody->SetTransform(b2Vec2(48.0f, 92.5f), 0.0f);
+	leftLegBody->SetTransform(b2Vec2(48.0f, 88.5f), 0.0f);
 
 	b2Body* rightLegBody = Box2DHelper::CreateRectangularDynamicBody(phyWorld, 2, 15, density, friction, restitution);
-	rightLegBody->SetTransform(b2Vec2(52.0f, 92.5f), 0.0f);
+	rightLegBody->SetTransform(b2Vec2(52.0f, 88.5f), 0.0f);
 
 	
 	
@@ -127,15 +136,15 @@ void Game::InitPhysics()
 	b2DistanceJoint* rightArmJoint = Box2DHelper::CreateDistanceJoint(phyWorld, rightArmBody, rightArmAnchor, centerBody, centerAnchorRA, 1, 0.8f, 0.1f);
 
 	//Pierna izquierda y torso
-	b2Vec2 centerAnchorLL(48.0f, 78.0f);
-	b2Vec2 leftLegAnchor(48.0f, 85.0f);
-	b2DistanceJoint* leftLegJoint = Box2DHelper::CreateDistanceJoint(phyWorld, leftLegBody, leftLegAnchor, centerBody, centerAnchorLL, 0, 0.5f, 0.2f);
+	b2Vec2 centerAnchorLL(48.0f, 79.0f);
+	b2Vec2 leftLegAnchor(48.0f, 82.5f);
+	float leftLegLength = b2Distance(centerAnchorLL, leftLegAnchor) * 0.7f;
+	b2DistanceJoint* leftLegJoint = Box2DHelper::CreateDistanceJoint(phyWorld, leftLegBody, leftLegAnchor, centerBody, centerAnchorLL, leftLegLength, 0.5f, 0.2f);
 
 	//Pierna derecha y torso
-	b2Vec2 centerAnchorRL(52.0f, 78.0f);
-	b2Vec2 rightLegAnchor(52.0f, 85.5f);
-	b2DistanceJoint* rightLegJoint = Box2DHelper::CreateDistanceJoint(phyWorld, rightLegBody, rightLegAnchor, centerBody, centerAnchorRL, 0, 0.5f, 0.2f);
-	/*
-	*/
+	b2Vec2 centerAnchorRL(52.0f, 79.0f);
+	b2Vec2 rightLegAnchor(52.0f, 82.5f);
+	float rightLegLength = b2Distance(centerAnchorRL, rightLegAnchor) * 0.7f;
+	b2DistanceJoint* rightLegJoint = Box2DHelper::CreateDistanceJoint(phyWorld, rightLegBody, rightLegAnchor, centerBody, centerAnchorRL, rightLegLength, 0.5f, 0.2f);
 }
 

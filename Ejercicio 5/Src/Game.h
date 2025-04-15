@@ -25,7 +25,7 @@ private:
 
 	//cuerpo de box2d 
 	b2Body* controlBody;
-	b2Body* draggedBody;
+	b2Body* centerBody;
 	Avatar* controlBodyAvatar;
 	Mouse* mouse;
 	
